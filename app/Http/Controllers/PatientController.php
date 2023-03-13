@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Http\Requests\StoreDoctorRequest;
-use App\Http\Requests\UpdateDoctorRequest;
-use App\Http\Resources\DoctorResource;
+use App\Models\Patient;
+use App\Http\Requests\StorePatientRequest;
+use App\Http\Requests\UpdatePatientRequest;
+use App\Http\Resources\PatientResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
-class DoctorController extends Controller
+class PatientController extends Controller
 {
     /**
      * Create a new AuthController instance.
@@ -30,7 +30,7 @@ class DoctorController extends Controller
     {
         $credentials = request(['email', 'password']); 
 
-        if (! $token = auth()->guard('doctor')->attempt($credentials)) {
+        if (! $token = auth()->guard('patient')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -44,7 +44,7 @@ class DoctorController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->guard('doctor')->user());
+        return response()->json(auth()->guard('patient')->user());
     }
 
     /**
@@ -54,7 +54,7 @@ class DoctorController extends Controller
      */
     public function logout()
     {
-        auth()->guard('doctor')->logout();
+        auth()->guard('patient')->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -92,67 +92,67 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $doctors = Doctor::all();
-        return DoctorResource::collection($doctors);
+        $doctors = Patient::all();
+        return PatientResource::collection($doctors);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDoctorRequest  $request
+     * @param  \App\Http\Requests\StorePatientRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDoctorRequest $request)
+    public function store(StorePatientRequest $request)
     {
-        $doctor = Doctor::create($request->all());
-        return new DoctorResource($doctor);
+        $patient = Patient::create($request->all());
+        return new PatientResource($patient);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Doctor  $doctor
+     * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function show(Doctor $doctor)
+    public function show(Patient $patient)
     {
-        return new DoctorResource($doctor);
+        return new PatientResource($patient);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateDoctorRequest  $request
-     * @param  \App\Models\Doctor  $doctor
+     * @param  \App\Http\Requests\UpdatePatientRequest  $request
+     * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDoctorRequest $request, Doctor $doctor)
+    public function update(UpdatePatientRequest $request, Patient $patient)
     {
-        $doctor->update($request->all());
-        return new DoctorResource($doctor);
+        $patient->update($request->all());
+        return new PatientResource($patient);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Doctor  $doctor
+     * @param  \App\Models\Patient  $patient
      * @return \Illuminate\Http\Response
      */
-    public function delete(Doctor $doctor)
+    public function delete(Patient $patient)
     {
-        $doctor->delete();
-        return new DoctorResource($doctor);
+        $patient->delete();
+        return new PatientResource($patient);
     }
 
     public function trashed() {
         return 'gggg';
-        /*return Doctor::onlyTrashed()->get();
-        return new DoctorResource(Doctor::onlyTrashed()->get());*/
+        /*return Patient::onlyTrashed()->get();
+        return new PatientResource(Patient::onlyTrashed()->get());*/
     }
 
-    public function restore(Doctor $doctor) {
-        $doctor = Doctor::onlyTrashed()->findOrFail($doctor);
-    $doctor->restore();
-    return new DoctorResource($doctor);
+    public function restore(Patient $patient) {
+        $patient = Patient::onlyTrashed()->findOrFail($patient);
+    $patient->restore();
+    return new PatientResource($patient);
     }
 }

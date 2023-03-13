@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DoctorResource extends JsonResource
+class PatientResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,28 +17,25 @@ class DoctorResource extends JsonResource
         //return parent::toArray($request);
         return [
             'id' => $this->id,
-            'username' => $this->username,
-            'specialite' => $this->specialite,
-            'membre_since' => $this->membre_since,
-            'status' => $this->status,
+            'name' => $this->name,
             'photo' => $this->photo,
             'sex' => $this->sex,
-            'date' => $this->date,
-            'email' => $this->email,
-            'firstname' => $this->firstname,
+            'blog_group' => $this->blog_group,
+            'total_income' => $this->total_income,
+            'status' => $this->status,
             'lastname' => $this->lastname,
+            'firstname' => $this->firstname,
+            'date_naissance' => $this->date_naissance,
+            'email' => $this->email,
             'password' => $this->password,
             'phone' => $this->phone,
-            'clinicname' => $this->clinicname,
-            'clinicadresse' => $this->clinicadresse,
-            'clinicimage' => $this->clinicimage,
-            'adresse_one' => $this->adresse_one,
-            'adresse_two' => $this->adresse_two,
+            'address' => $this->address,
             'city' => $this->city,
             'state' => $this->state,
+            'zip_code' => $this->zip_code,
             'country' => $this->country,
-            'code_postal' => $this->code_postal,
-            'pricing' => $this->pricing,
-        ];
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ]
     }
 }

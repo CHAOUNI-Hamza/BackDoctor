@@ -19,27 +19,90 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix('doctors')->group(function () {
+
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'App\Http\Controllers\AuthController@login');
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::post('me', 'App\Http\Controllers\AuthController@me');
+
+});
+
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'doctors'
+
+], function ($router) {
 
     // Afficher tous les docteurs
-    Route::get('/', 'DoctorController@index');
+    Route::get('/', 'App\Http\Controllers\DoctorController@index');
 
     // Créer un nouveau docteur
-    Route::post('/', 'DoctorController@store');
+    Route::post('/', 'App\Http\Controllers\DoctorController@store');
 
     // Afficher un docteur spécifique
-    Route::get('/{id}', 'DoctorController@show');
+    Route::get('/{doctor}', 'App\Http\Controllers\DoctorController@show');
 
     // Mettre à jour un docteur spécifique
-    Route::put('/{id}', 'DoctorController@update');
+    Route::put('/{doctor}', 'App\Http\Controllers\DoctorController@update');
 
     // Supprimer un docteur spécifique (soft delete)
-    Route::delete('/{id}', 'DoctorController@softDelete');
+    Route::delete('/{doctor}', 'App\Http\Controllers\DoctorController@delete');
 
     // Afficher tous les docteurs supprimés (soft delete)
-    Route::get('/deleted', 'DoctorController@deleted');
+    Route::get('/trashed', 'App\Http\Controllers\DoctorController@trashed');
 
     // Restaurer un docteur supprimé (soft delete)
-    Route::put('/restore/{id}', 'DoctorController@restore');
+    Route::put('/restore/{doctor}', 'App\Http\Controllers\DoctorController@restore');
+
+    Route::post('login', 'App\Http\Controllers\DoctorController@login');
+    Route::post('logout', 'App\Http\Controllers\DoctorController@logout');
+    Route::post('refresh', 'App\Http\Controllers\DoctorController@refresh');
+    Route::post('me', 'App\Http\Controllers\DoctorController@me');
+
+});
+
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'patients'
+
+], function ($router) {
+
+    // Afficher tous les patients
+    Route::get('/', 'App\Http\Controllers\PatientController@index');
+
+    // Créer un nouveau patient
+    Route::post('/', 'App\Http\Controllers\PatientController@store');
+
+    // Afficher un patient spécifique
+    Route::get('/{patient}', 'App\Http\Controllers\PatientController@show');
+
+    // Mettre à jour un patient spécifique
+    Route::put('/{patient}', 'App\Http\Controllers\PatientController@update');
+
+    // Supprimer un patient spécifique (soft delete)
+    Route::delete('/{patient}', 'App\Http\Controllers\PatientController@delete');
+
+    // Afficher tous les patients supprimés (soft delete)
+    Route::get('/trashed', 'App\Http\Controllers\PatientController@trashed');
+
+    // Restaurer un patient supprimé (soft delete)
+    Route::put('/restore/{patient}', 'App\Http\Controllers\PatientController@restore');
+
+    Route::post('login', 'App\Http\Controllers\PatientController@login');
+    Route::post('logout', 'App\Http\Controllers\PatientController@logout');
+    Route::post('refresh', 'App\Http\Controllers\PatientController@refresh');
+    Route::post('me', 'App\Http\Controllers\PatientController@me');
 
 });

@@ -22,7 +22,7 @@ $table->string('status');
 $table->string('photo');
 $table->string('sex');
 $table->date('date');
-$table->string('email');
+$table->string('email')->unique();
 $table->string('firstname');
 $table->string('lastname');
 $table->string('password');
@@ -38,7 +38,10 @@ $table->string('country');
 $table->string('code_postal');
 $table->string('pricing');
 $table->softDeletes();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
+
         });
     }
 

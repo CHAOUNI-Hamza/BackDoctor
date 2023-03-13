@@ -2,42 +2,35 @@
 
 namespace App\Models;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Doctor extends Authenticatable implements JWTSubject
+class Patient extends Authenticatable implements JWTSubject
 {
     use HasFactory, SoftDeletes, Notifiable;
 
-    protected $guard = "doctor";
-
     protected $fillable = [
-        'username',
-        'specialite',
-        'membre_since',
-        'status',
+        'name',
         'photo',
         'sex',
-        'date',
+        'blood_group',
+        'total_income',
+        'status',
+        'last_name',
+        'first_name',
+        'date_of_birth',
         'email',
-        'firstname',
-        'lastname',
-        'password',
         'phone',
-        'clinicname',
-        'clinicadresse',
-        'clinicimage',
-        'adresse_one',
-        'adresse_two',
+        'address',
         'city',
         'state',
+        'zip_code',
         'country',
-        'code_postal',
-        'pricing',
+        'password',
     ];
 
     protected $hidden = [
