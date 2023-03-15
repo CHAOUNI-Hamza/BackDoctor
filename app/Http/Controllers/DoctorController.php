@@ -18,7 +18,7 @@ class DoctorController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('doctor', ['except' => ['login']]);
     }
 
     /**
@@ -104,6 +104,13 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
+        /*$photo = $request->file('photo');
+        $name = time().'.'.$photo->getClientOriginalExtension();
+        $destinationPath = public_path('/uploads');
+        $photo->move($destinationPath, $name);
+        $imageData->path = $destinationPath.'/'.$name;
+        $imageData->save();*/
+
         $doctor = Doctor::create($request->all());
         return new DoctorResource($doctor);
     }
@@ -128,6 +135,7 @@ class DoctorController extends Controller
      */
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
+        return 'hhhh';
         $doctor->update($request->all());
         return new DoctorResource($doctor);
     }
@@ -144,10 +152,8 @@ class DoctorController extends Controller
         return new DoctorResource($doctor);
     }
 
-    public function trashed() {
-        return 'gggg';
-        /*return Doctor::onlyTrashed()->get();
-        return new DoctorResource(Doctor::onlyTrashed()->get());*/
+    public function deleted() {
+        return Doctor::onlyTrashed()->get();
     }
 
     public function restore(Doctor $doctor) {

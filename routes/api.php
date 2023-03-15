@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
 
 
@@ -38,7 +38,7 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
+    //'middleware' => 'doctor',
     'prefix' => 'doctors'
 
 ], function ($router) {
@@ -58,9 +58,6 @@ Route::group([
     // Supprimer un docteur spécifique (soft delete)
     Route::delete('/{doctor}', 'App\Http\Controllers\DoctorController@delete');
 
-    // Afficher tous les docteurs supprimés (soft delete)
-    Route::get('/trashed', 'App\Http\Controllers\DoctorController@trashed');
-
     // Restaurer un docteur supprimé (soft delete)
     Route::put('/restore/{doctor}', 'App\Http\Controllers\DoctorController@restore');
 
@@ -68,6 +65,7 @@ Route::group([
     Route::post('logout', 'App\Http\Controllers\DoctorController@logout');
     Route::post('refresh', 'App\Http\Controllers\DoctorController@refresh');
     Route::post('me', 'App\Http\Controllers\DoctorController@me');
+    Route::post('deleted', 'App\Http\Controllers\DoctorController@deleted');
 
 });
 

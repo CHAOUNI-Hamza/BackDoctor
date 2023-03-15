@@ -14,8 +14,8 @@ class DoctorResource extends JsonResource
      */
     public function toArray($request)
     {
-        //return parent::toArray($request);
-        return [
+        return parent::toArray($request);
+        /*return [
             'id' => $this->id,
             'username' => $this->username,
             'specialite' => $this->specialite,
@@ -39,6 +39,6 @@ class DoctorResource extends JsonResource
             'country' => $this->country,
             'code_postal' => $this->code_postal,
             'pricing' => $this->pricing,
-        ];
+        ];*/
     }
 }
