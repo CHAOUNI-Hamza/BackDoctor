@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Doctor;
+use App\Models\Patient;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorResource;
@@ -18,7 +20,7 @@ class DoctorController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('doctor', ['except' => ['login']]);
+        //$this->middleware('doctor', ['except' => ['login']]);
     }
 
     /**
@@ -90,10 +92,17 @@ class DoctorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = Doctor::all();
-        return DoctorResource::collection($doctors);
+        $perPage = $request->input('perPage', 10);
+    $whereBy = $request->input('whereBy', '');
+    $value = $request->input('value', '');
+
+    $doctors = Doctor::where($whereBy, 'like', '%' . $value . '%')->paginate($perPage);
+
+    return new DoctorResource($doctors);
+        /*$doctors = Doctor::all();
+        return DoctorResource::collection($doctors);*/
     }
 
     /**

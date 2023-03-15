@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Patient;
 
 class Doctor extends Authenticatable implements JWTSubject
 {
@@ -38,12 +39,24 @@ class Doctor extends Authenticatable implements JWTSubject
         'country',
         'code_postal',
         'pricing',
+        'service',
+            'specialization',
+            'education',
+            'experience',
+            'awords',
+            'memberships',
+            'registrations'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    public function patients()
+    {
+        return $this->belongsToMany(Patient::class);
+    }
 
     // Rest omitted for brevity
 

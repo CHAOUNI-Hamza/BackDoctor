@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Doctor;
 
 class Patient extends Authenticatable implements JWTSubject
 {
@@ -37,6 +38,11 @@ class Patient extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
+
+    public function doctors()
+    {
+        return $this->belongsToMany(Doctor::class);
+    }
 
     // Rest omitted for brevity
 

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     public function roles()
     {
@@ -30,6 +30,15 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'photo',
+        'firstname',
+        'lastname',
+        'age',
+        'date_naissance',
+        'about_me',
+        'adresse',
+        'city_state',
+        'pin_code',
     ];
 
     /**

@@ -23,10 +23,30 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
 
-    'middleware' => 'api',
+    //'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
+
+    // Afficher tous les docteurs
+    Route::get('/', 'App\Http\Controllers\AuthController@index');
+
+    // Créer un nouveau docteur
+    Route::post('/', 'App\Http\Controllers\AuthController@store');
+
+    // Afficher un docteur spécifique
+    Route::get('/{user}', 'App\Http\Controllers\AuthController@show');
+
+    // Mettre à jour un docteur spécifique
+    Route::put('/{user}', 'App\Http\Controllers\AuthController@update');
+
+    // Supprimer un docteur spécifique (soft delete)
+    Route::delete('/{user}', 'App\Http\Controllers\AuthController@delete');
+
+    // Restaurer un docteur supprimé (soft delete)
+    Route::put('/restore/{user}', 'App\Http\Controllers\AuthController@restore');
+
+    Route::post('deleted', 'App\Http\Controllers\AuthController@deleted');
 
     Route::post('login', 'App\Http\Controllers\AuthController@login');
     Route::post('logout', 'App\Http\Controllers\AuthController@logout');
@@ -72,7 +92,7 @@ Route::group([
 
 Route::group([
 
-    'middleware' => 'api',
+    //'middleware' => 'api',
     'prefix' => 'patients'
 
 ], function ($router) {

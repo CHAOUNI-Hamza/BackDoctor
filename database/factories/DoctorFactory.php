@@ -40,6 +40,15 @@ class DoctorFactory extends Factory
             'code_postal' => $this->faker->postcode,
             'pricing' => $this->faker->randomFloat(2, 50, 200),
             'photo' => $this->faker->imageUrl(),
+            //'service' => ['field1' => $this->faker->word, 'field2' => $this->faker->word],
+            //'specialization' => ['field1' => $this->faker->word, 'field2' => $this->faker->word],
+            'service' => $this->faker->sentence,
+            'specialization' => $this->faker->sentence,
+            'education' => $this->faker->sentence,
+            'experience' => $this->faker->sentence,
+            'awords' => $this->faker->sentence,
+            'memberships' => $this->faker->sentence,
+            'registrations' => $this->faker->sentence,
         ];
     }
 }

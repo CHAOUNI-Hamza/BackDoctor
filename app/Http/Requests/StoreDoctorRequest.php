@@ -48,6 +48,13 @@ class StoreDoctorRequest extends FormRequest
             'code_postal' => ['required', 'string', 'max:20'],
             'pricing' => ['required', 'string'],
             'photo' => ['nullable', 'max:2048'],
+            'service' => 'nullable',
+        'specialization' => 'nullable',
+        'education' => 'nullable',
+        'experience' => 'nullable',
+        'awords' => 'nullable',
+        'memberships' => 'nullable',
+        'registrations' => 'nullable',
         ];
     }
 
