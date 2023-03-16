@@ -23,6 +23,13 @@ class DatabaseSeeder extends Seeder
         \App\Models\Patient::factory()->count(10)->create();
         \App\Models\Appointement::factory()->count(20)->create();
         \App\Models\Specialty::factory()->count(10)->create();
+
+        $doctors = \App\Models\Doctor::all();
+        $patients = \App\Models\Patient::all();
+
+        foreach ($doctors as $doctor) {
+            $doctor->patients()->attach($patients->random(rand(1, 5))->pluck('id')->toArray());
+        }
         /*$adminRole = \App\Models\Role::where('name', 'admin')->first();
         $editorRole = \App\Models\Role::where('name', 'doctor')->first();
         $viewerRole = \App\Models\Role::where('name', 'patient')->first(); 

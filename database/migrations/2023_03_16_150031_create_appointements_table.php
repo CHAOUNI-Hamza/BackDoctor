@@ -27,7 +27,7 @@ class CreateAppointementsTable extends Migration
             $table->string('consultation_type');
             $table->dateTime('date_time');
             $table->decimal('amount', 8, 2);
-            $table->string('status', ['pending', 'confirmed', 'cancelled']);
+            $table->string('status');
             $table->softDeletes();
             $table->timestamps();
         });

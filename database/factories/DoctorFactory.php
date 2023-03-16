@@ -42,7 +42,7 @@ class DoctorFactory extends Factory
             'photo' => $this->faker->imageUrl(),
             //'service' => ['field1' => $this->faker->word, 'field2' => $this->faker->word],
             //'specialization' => ['field1' => $this->faker->word, 'field2' => $this->faker->word],
-            'service' => $this->faker->sentence,
+            'service' => $this->faker->userName,
             'specialization' => $this->faker->sentence,
             'education' => $this->faker->sentence,
             'experience' => $this->faker->sentence,

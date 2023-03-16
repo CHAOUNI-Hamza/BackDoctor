@@ -124,3 +124,19 @@ Route::group([
     Route::post('me', 'App\Http\Controllers\PatientController@me');
 
 });
+
+
+
+
+
+Route::group([
+
+    //'middleware' => 'api',
+    'prefix' => 'appointements'
+
+], function ($router) {
+
+    // Afficher tous les appointement Upcomming
+    Route::get('/upcomming_past', 'App\Http\Controllers\AppointementController@appointementUpcommingPast');
+
+});

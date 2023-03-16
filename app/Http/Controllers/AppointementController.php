@@ -5,9 +5,35 @@ namespace App\Http\Controllers;
 use App\Models\Appointement;
 use App\Http\Requests\StoreAppointementRequest;
 use App\Http\Requests\UpdateAppointementRequest;
+use Illuminate\Http\Request;
+use App\Http\Resources\AppointementResource;
 
 class AppointementController extends Controller
 {
+    /* Start Method Admin */
+    public function appointementUpcommingPast(Request $request) {
+        $query = Appointement::with(['doctor', 'patient']);
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->filled('name_patient')) {
+        $query->whereHas('patient', function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->name_patient . '%');
+        });
+    }
+
+    if ($request->filled('name_doctor')) {
+        $query->whereHas('doctor', function ($query) use ($request) {
+            $query->where('username', 'like', '%' . $request->name_doctor . '%');
+        });
+    }
+
+    $appointments = $query->paginate(6);
+    return new AppointementResource($appointments);
+    }
+    /* End Method Admin */
     /**
      * Display a listing of the resource.
      *
