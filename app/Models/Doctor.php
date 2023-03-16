@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Patient;
+use App\Models\Appointment;
 
 class Doctor extends Authenticatable implements JWTSubject
 {
@@ -52,6 +53,11 @@ class Doctor extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
     public function patients()
     {

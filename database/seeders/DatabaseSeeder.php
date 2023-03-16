@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         //\App\Models\Role::factory(3)->create();
         \App\Models\Doctor::factory()->count(5)->create();
         \App\Models\Patient::factory()->count(10)->create();
+        \App\Models\Appointement::factory()->count(20)->create();
+        \App\Models\Specialty::factory()->count(10)->create();
         /*$adminRole = \App\Models\Role::where('name', 'admin')->first();
         $editorRole = \App\Models\Role::where('name', 'doctor')->first();
         $viewerRole = \App\Models\Role::where('name', 'patient')->first(); 

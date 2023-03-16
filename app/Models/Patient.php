@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Doctor;
+use App\Models\Appointment;
 
 class Patient extends Authenticatable implements JWTSubject
 {
@@ -38,6 +39,11 @@ class Patient extends Authenticatable implements JWTSubject
         'password',
         'remember_token',
     ];
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
     public function doctors()
     {
