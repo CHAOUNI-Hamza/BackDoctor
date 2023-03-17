@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAppointementRequest;
 use App\Http\Requests\UpdateAppointementRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\AppointementResource;
+use Illuminate\Support\Facades\Schema;
 
 class AppointementController extends Controller
 {
@@ -15,7 +16,7 @@ class AppointementController extends Controller
         $query = Appointement::with(['doctor', 'patient']);
 
     if ($request->filled('status')) {
-        $query->where('status', $request->status);
+        $query->where('status', $request->status)->orWhere('status', $request->status_two);
     }
 
     if ($request->filled('name_patient')) {
