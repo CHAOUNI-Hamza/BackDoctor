@@ -33,6 +33,19 @@ class SpecialtyController extends Controller
      */
     public function store(StorespecialtyRequest $request)
     {
+
+    // Enregistrement des données dans la base de données
+    $specialty = new specialty;
+    $specialty->name = $request->name;
+
+    // Traitement de l'image téléchargée
+    $photoName = time().'.'.$request->photo->extension();  
+    $request->photo->move(public_path('images'), $photoName);
+
+    $specialty->photo = $photoName;
+    $specialty->save();
+
+    return 'hhhhh';
     }
     
     /* End Method Admin */
