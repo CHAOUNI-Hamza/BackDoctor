@@ -5,9 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\specialty;
 use App\Http\Requests\StorespecialtyRequest;
 use App\Http\Requests\UpdatespecialtyRequest;
+use Illuminate\Http\Request;
+use App\Http\Resources\SpecialtyResource;
+use Illuminate\Support\Facades\Schema;
+use App\Models\Image;
 
 class SpecialtyController extends Controller
 {
+    /* Start Method Admin */
+
+    public function specialties(Request $request) {
+        $query = specialty::orderBy($request->order_by);
+
+    if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    $specialities = $query->paginate(10);
+    return new SpecialtyResource($specialities);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\StorespecialtyRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StorespecialtyRequest $request)
+    {
+    }
+    
+    /* End Method Admin */
+
     /**
      * Display a listing of the resource.
      *
@@ -28,16 +57,7 @@ class SpecialtyController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorespecialtyRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorespecialtyRequest $request)
-    {
-        //
-    }
+    
 
     /**
      * Display the specified resource.

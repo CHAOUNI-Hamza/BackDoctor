@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Schema;
 class AppointementController extends Controller
 {
     /* Start Method Admin */
+
     public function appointementUpcommingPast(Request $request) {
         $query = Appointement::with(['doctor', 'patient']);
 
-    if ($request->filled('status')) {
+    /*if ($request->filled('status')) {
         $query->where('status', $request->status)->orWhere('status', $request->status_two);
-    }
+    }*/
 
     if ($request->filled('name_patient')) {
         $query->whereHas('patient', function ($query) use ($request) {
@@ -31,10 +32,12 @@ class AppointementController extends Controller
         });
     }
 
-    $appointments = $query->paginate(6);
+    $appointments = $query->paginate(10);
     return new AppointementResource($appointments);
     }
+    
     /* End Method Admin */
+
     /**
      * Display a listing of the resource.
      *

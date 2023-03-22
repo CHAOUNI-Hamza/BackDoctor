@@ -140,3 +140,16 @@ Route::group([
     Route::get('/upcomming_past', 'App\Http\Controllers\AppointementController@appointementUpcommingPast');
 
 });
+
+Route::group([
+
+    //'middleware' => 'api',
+    'prefix' => 'specialties'
+
+], function ($router) {
+
+    // Afficher tous les specialties 
+    Route::get('/', 'App\Http\Controllers\SpecialtyController@specialties');
+    Route::post('/', 'App\Http\Controllers\SpecialtyController@store');
+
+});
