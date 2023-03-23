@@ -151,5 +151,6 @@ Route::group([
     // Afficher tous les specialties 
     Route::get('/', 'App\Http\Controllers\SpecialtyController@specialties');
     Route::post('/', 'App\Http\Controllers\SpecialtyController@store');
+    Route::put('/{speciality}', 'App\Http\Controllers\SpecialtyController@update');
 
 });

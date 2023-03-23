@@ -8,7 +8,6 @@ use App\Http\Requests\UpdatespecialtyRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\SpecialtyResource;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Image;
 
 class SpecialtyController extends Controller
 {
@@ -33,19 +32,39 @@ class SpecialtyController extends Controller
      */
     public function store(StorespecialtyRequest $request)
     {
+        $specialty = new specialty;
+        $specialty->name = $request->name;
+        if ($request->hasFile('photo')) {
+            $photoName = time().'.'.$request->photo->extension();
+        $request->photo->move(public_path('images'), $photoName);
+        $specialty->photo = $photoName;
+        }
+        
+        $specialty->save();
+        return new SpecialtyResource($specialty);
+    }
 
-    // Enregistrement des données dans la base de données
-    $specialty = new specialty;
-    $specialty->name = $request->name;
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdatespecialtyRequest  $request
+     * @param  \App\Models\specialty  $specialty
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdatespecialtyRequest $request, specialty $specialty)
+    {
+        return $specialty;
+        $specialty->name = $request->input('name', $specialty->name);
 
-    // Traitement de l'image téléchargée
-    $photoName = time().'.'.$request->photo->extension();  
-    $request->photo->move(public_path('images'), $photoName);
+        if ($request->hasFile('photo')) {
+            $photoName = time().'.'.$request->photo->extension();
+        $request->photo->move(public_path('images'), $photoName);
+        $specialty->photo = $photoName;
+        }
 
-    $specialty->photo = $photoName;
     $specialty->save();
 
-    return 'hhhhh';
+    return new SpecialtyResource($specialty);
     }
     
     /* End Method Admin */
@@ -94,17 +113,7 @@ class SpecialtyController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatespecialtyRequest  $request
-     * @param  \App\Models\specialty  $specialty
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatespecialtyRequest $request, specialty $specialty)
-    {
-        //
-    }
+    
 
     /**
      * Remove the specified resource from storage.
