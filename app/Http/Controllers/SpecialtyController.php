@@ -8,7 +8,6 @@ use App\Http\Requests\UpdatespecialtyRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\SpecialtyResource;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Image;
 
 class SpecialtyController extends Controller
 {
@@ -33,6 +32,13 @@ class SpecialtyController extends Controller
      */
     public function store(StorespecialtyRequest $request)
     {
+        $specialty = new specialty;
+        $specialty->name = $request->name;
+        $photoName = time().'.'.$request->photo->extension();
+        $request->photo->move(public_path('images'), $photoName);
+        $specialty->photo = $photoName;
+        $specialty->save();
+        return new SpecialtyResource($specialty);
     }
     
     /* End Method Admin */
