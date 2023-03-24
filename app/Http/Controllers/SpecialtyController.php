@@ -21,7 +21,9 @@ class SpecialtyController extends Controller
     }
 
     $specialities = $query->paginate(10);
-    return new SpecialtyResource($specialities);
+    //return $specialities;
+    //return new SpecialtyResource($specialities);
+    return SpecialtyResource::collection($specialities);
     }
 
     /**
