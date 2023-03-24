@@ -51,10 +51,10 @@ class SpecialtyController extends Controller
      * @param  \App\Models\specialty  $specialty
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatespecialtyRequest $request, specialty $specialty)
+    public function update(UpdatespecialtyRequest $request, $id)
     {
-        return $specialty;
-        $specialty->name = $request->input('name', $specialty->name);
+        $specialty = specialty::find($id);
+        $specialty->name = $request->name;
 
         if ($request->hasFile('photo')) {
             $photoName = time().'.'.$request->photo->extension();
@@ -62,7 +62,24 @@ class SpecialtyController extends Controller
         $specialty->photo = $photoName;
         }
 
-    $specialty->save();
+    $specialty->update(); 
+
+    return new SpecialtyResource($specialty);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\specialty  $specialty
+     * @return \Illuminate\Http\Response
+     */
+    public function show(specialty $specialty, $id)
+    {
+        $specialty = specialty::find($id);
+
+    if (!$specialty) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
 
     return new SpecialtyResource($specialty);
     }
@@ -91,16 +108,7 @@ class SpecialtyController extends Controller
 
     
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\specialty  $specialty
-     * @return \Illuminate\Http\Response
-     */
-    public function show(specialty $specialty)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
