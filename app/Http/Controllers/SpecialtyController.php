@@ -14,15 +14,15 @@ class SpecialtyController extends Controller
     /* Start Method Admin */
 
     public function specialties(Request $request) {
-        $query = specialty::orderBy($request->order_by);
+        $order_by = $request->input('order_by', 'id');
+        $query = specialty::orderBy($order_by);
 
     if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
     }
 
     $specialities = $query->paginate(10);
-    //return $specialities;
-    //return new SpecialtyResource($specialities);
+
     return SpecialtyResource::collection($specialities);
     }
 
@@ -85,6 +85,18 @@ class SpecialtyController extends Controller
 
     return new SpecialtyResource($specialty);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\specialty  $specialty
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(specialty $specialty)
+    {
+        $specialty->delete();
+        return new SpecialtyResource($specialty);
+    }
     
     /* End Method Admin */
 
@@ -125,14 +137,5 @@ class SpecialtyController extends Controller
 
     
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\specialty  $specialty
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(specialty $specialty)
-    {
-        //
-    }
+    
 }

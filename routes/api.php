@@ -153,5 +153,6 @@ Route::group([
     Route::post('/', 'App\Http\Controllers\SpecialtyController@store');
     Route::post('/{id}', 'App\Http\Controllers\SpecialtyController@update');
     Route::get('/{id}', 'App\Http\Controllers\SpecialtyController@show');
+    Route::delete('/{specialty}', 'App\Http\Controllers\SpecialtyController@destroy');
 
 });

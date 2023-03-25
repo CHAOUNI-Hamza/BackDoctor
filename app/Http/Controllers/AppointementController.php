@@ -33,7 +33,7 @@ class AppointementController extends Controller
     }
 
     $appointments = $query->paginate(10);
-    return new AppointementResource($appointments);
+    return AppointementResource::collection($appointments);
     }
     
     /* End Method Admin */
