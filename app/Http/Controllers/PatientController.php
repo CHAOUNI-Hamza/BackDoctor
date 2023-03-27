@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Http\Resources\PatientResource;
@@ -18,8 +19,25 @@ class PatientController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('patient', ['except' => ['login']]);
+        //$this->middleware('patient', ['except' => ['login']]);
     }
+
+    /* Start Method Admin */
+
+    public function patients(Request $request) {
+        $order_by = $request->input('order_by', 'id');
+        $query = Patient::orderBy($order_by);
+
+    if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    $patients = $query->paginate(10);
+
+    return PatientResource::collection($patients);
+    }
+
+    /* End Method Admin */
 
     /**
      * Get a JWT via given credentials.

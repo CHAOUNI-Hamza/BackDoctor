@@ -74,6 +74,7 @@ Route::group([
 
     // Mettre à jour un docteur spécifique
     Route::put('/{doctor}', 'App\Http\Controllers\DoctorController@update');
+    Route::post('/{id}/update-status', 'App\Http\Controllers\DoctorController@updateStatus');
 
     // Supprimer un docteur spécifique (soft delete)
     Route::delete('/{doctor}', 'App\Http\Controllers\DoctorController@delete');
@@ -98,7 +99,7 @@ Route::group([
 ], function ($router) {
 
     // Afficher tous les patients
-    Route::get('/', 'App\Http\Controllers\PatientController@index');
+    Route::get('/', 'App\Http\Controllers\PatientController@patients');
 
     // Créer un nouveau patient
     Route::post('/', 'App\Http\Controllers\PatientController@store');

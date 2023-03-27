@@ -49,6 +49,17 @@ class DoctorController extends Controller
     $doctors = $query->paginate(10);
     return DoctorResource::collection($doctors);
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $doctor = Doctor::findOrFail($id);
+        $doctor->status = $request->input('status');
+        $doctor->save();
+        return response()->json([
+            'message' => 'Doctor updated successfully',
+            'data' => $doctor
+        ]);
+    }
     /* End Method Admin */
 
     /**
