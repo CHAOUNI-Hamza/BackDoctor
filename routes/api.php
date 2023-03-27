@@ -64,7 +64,7 @@ Route::group([
 ], function ($router) {
 
     // Afficher tous les docteurs
-    Route::get('/', 'App\Http\Controllers\DoctorController@index');
+    Route::get('/', 'App\Http\Controllers\DoctorController@doctors');
 
     // Créer un nouveau docteur
     Route::post('/', 'App\Http\Controllers\DoctorController@store');
@@ -156,3 +156,4 @@ Route::group([
     Route::delete('/{specialty}', 'App\Http\Controllers\SpecialtyController@destroy');
 
 });
+

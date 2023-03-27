@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Doctor;
+use App\Models\Appointement;
 use App\Models\Patient;
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
@@ -22,6 +23,33 @@ class DoctorController extends Controller
     {
         //$this->middleware('doctor', ['except' => ['login']]);
     }
+
+    /* Start Method Admin */
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function doctors(Request $request)
+    {
+
+            $query = Doctor::with(['specialty']);
+            $query->withCount('appointments');
+
+        if ($request->filled('specialty')) {
+        $query->whereHas('specialty', function ($query) use ($request) {
+            $query->where('name', $request->specialty);
+       });
+    }
+
+        if ($request->filled('name')) {
+            $query->where('username', 'like', '%' . $request->name . '%');
+    };
+
+    $doctors = $query->paginate(10);
+    return DoctorResource::collection($doctors);
+    }
+    /* End Method Admin */
 
     /**
      * Get a JWT via given credentials.
@@ -87,23 +115,7 @@ class DoctorController extends Controller
         ]);
     }
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $perPage = $request->input('perPage', 10);
-    $whereBy = $request->input('whereBy', '');
-    $value = $request->input('value', '');
-
-    $doctors = Doctor::where($whereBy, 'like', '%' . $value . '%')->paginate($perPage);
-
-    return new DoctorResource($doctors);
-        /*$doctors = Doctor::all();
-        return DoctorResource::collection($doctors);*/
-    }
+   
 
     /**
      * Store a newly created resource in storage.

@@ -16,7 +16,12 @@ class CreateDoctorsTable extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('username');
-$table->string('specialite');
+$table->unsignedBigInteger('specialty_id');
+            $table->foreign('specialty_id')->references('id')->on('specialties')->onDelete('cascade');
+
+
+
+
 $table->dateTime('membre_since');
 $table->string('status');
 $table->string('photo');

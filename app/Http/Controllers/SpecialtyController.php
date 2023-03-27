@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatespecialtyRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\SpecialtyResource;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class SpecialtyController extends Controller
 {
@@ -37,9 +38,8 @@ class SpecialtyController extends Controller
         $specialty = new specialty;
         $specialty->name = $request->name;
         if ($request->hasFile('photo')) {
-            $photoName = time().'.'.$request->photo->extension();
-        $request->photo->move(public_path('images'), $photoName);
-        $specialty->photo = $photoName;
+        $path = $request->file('photo')->store('public/clients');  
+            $specialty->photo = Storage::url($path);
         }
         
         $specialty->save();
@@ -59,9 +59,8 @@ class SpecialtyController extends Controller
         $specialty->name = $request->name;
 
         if ($request->hasFile('photo')) {
-            $photoName = time().'.'.$request->photo->extension();
-        $request->photo->move(public_path('images'), $photoName);
-        $specialty->photo = $photoName;
+            $path = $request->file('photo')->store('public/clients');  
+            $specialty->photo = Storage::url($path);
         }
 
     $specialty->update(); 

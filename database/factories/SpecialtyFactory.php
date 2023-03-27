@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Specialty;
+use App\Models\specialty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SpecialtyFactory extends Factory
 {
-    protected $model = Specialty::class;
+    protected $model = specialty::class;
 
     /**
      * Define the model's default state.

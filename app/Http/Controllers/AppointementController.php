@@ -16,9 +16,9 @@ class AppointementController extends Controller
     public function appointementUpcommingPast(Request $request) {
         $query = Appointement::with(['doctor', 'patient']);
 
-    /*if ($request->filled('status')) {
+    if ($request->filled('status')) {
         $query->where('status', $request->status)->orWhere('status', $request->status_two);
-    }*/
+    }
 
     if ($request->filled('name_patient')) {
         $query->whereHas('patient', function ($query) use ($request) {

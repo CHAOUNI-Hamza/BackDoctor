@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Doctor;
+use App\Models\specialty;
 use Illuminate\Support\Str;
 
 class DoctorFactory extends Factory
@@ -19,7 +20,7 @@ class DoctorFactory extends Factory
     {
         return [
             'username' => $this->faker->unique()->userName,
-            'specialite' => $this->faker->randomElement(['Cardiologue', 'Dentiste', 'Ophtalmologue', 'Gynécologue']),
+            'specialty_id'  => specialty::factory(),
             'membre_since' => $this->faker->dateTimeBetween('-5 years', 'now'),
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'sex' => $this->faker->randomElement(['male', 'female']),

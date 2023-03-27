@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         //\App\Models\Role::create(['name' => 'editor']);
         //\App\Models\Role::create(['name' => 'viewer']);
 
-        \App\Models\User::factory(10)->create();
+        /*\App\Models\User::factory(10)->create();*/
         //\App\Models\Role::factory(3)->create();
         \App\Models\Doctor::factory()->count(5)->create();
         \App\Models\Patient::factory()->count(10)->create();
