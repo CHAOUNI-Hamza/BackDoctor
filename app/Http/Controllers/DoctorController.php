@@ -37,7 +37,8 @@ class DoctorController extends Controller
             $query->withCount('appointments');
 
             if ($request->filled('limit_doctors')) {
-            $query->orderBy('appointments_count', 'desc')->take($request->limit_doctors);
+            $doctors = $query->orderBy('appointments_count', 'desc')->take($request->limit_doctors)->get();
+            return DoctorResource::collection($doctors);
     };
                     
 
