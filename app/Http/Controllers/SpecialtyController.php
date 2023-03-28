@@ -22,7 +22,12 @@ class SpecialtyController extends Controller
             $query->where('name', 'like', '%' . $request->name . '%');
     }
 
-    $specialities = $query->paginate(10);
+    if ($request->filled('pagination')) {
+            $specialities = $query->paginate($request->pagination);
+            return SpecialtyResource::collection($specialities);
+    }
+
+    $specialities = $query->get();
 
     return SpecialtyResource::collection($specialities);
     }

@@ -36,6 +36,11 @@ class DoctorController extends Controller
             $query = Doctor::with(['specialty']);
             $query->withCount('appointments');
 
+            if ($request->filled('limit_doctors')) {
+            $query->orderBy('appointments_count', 'desc')->take($request->limit_doctors);
+    };
+                    
+
         if ($request->filled('specialty')) {
         $query->whereHas('specialty', function ($query) use ($request) {
             $query->where('name', $request->specialty);
