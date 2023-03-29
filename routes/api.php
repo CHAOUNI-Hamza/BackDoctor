@@ -158,3 +158,34 @@ Route::group([
 
 });
 
+Route::group([
+
+    //'middleware' => 'api',
+    'prefix' => 'pharmacies'
+
+], function ($router) {
+
+    Route::get('/', 'App\Http\Controllers\PharmacyController@index');
+    Route::post('/', 'App\Http\Controllers\PharmacyController@store');
+    Route::post('/{id}', 'App\Http\Controllers\PharmacyController@update');
+    Route::get('/{id}', 'App\Http\Controllers\PharmacyController@show');
+    Route::delete('/{pharmacy}', 'App\Http\Controllers\PharmacyController@destroy');
+
+});
+
+
+Route::group([
+
+    //'middleware' => 'api',
+    'prefix' => 'categories'
+
+], function ($router) {
+
+    Route::get('/', 'App\Http\Controllers\CategoryController@index');
+    Route::post('/', 'App\Http\Controllers\CategoryController@store');
+    Route::post('/{id}', 'App\Http\Controllers\CategoryController@update');
+    Route::get('/{id}', 'App\Http\Controllers\CategoryController@show');
+    Route::delete('/{pharmacy}', 'App\Http\Controllers\CategoryController@destroy');
+
+});
+

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class AppointementSeeder extends Seeder
+class PharmacySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class AppointementSeeder extends Seeder
      */
     public function run()
     {
-        
+        //
     }
 }
