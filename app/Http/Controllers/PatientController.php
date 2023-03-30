@@ -28,8 +28,8 @@ class PatientController extends Controller
         $order_by = $request->input('order_by', 'id');
         $query = Patient::orderBy($order_by);
 
-    if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
+    if ($request->filled('value') && $request->filled('search_by')) {
+            $query->where($request->search_by, 'like', '%' . $request->value . '%');
     }
 
     $patients = $query->paginate(10);

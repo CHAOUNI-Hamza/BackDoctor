@@ -185,7 +185,7 @@ Route::group([
     Route::post('/', 'App\Http\Controllers\CategoryController@store');
     Route::post('/{id}', 'App\Http\Controllers\CategoryController@update');
     Route::get('/{id}', 'App\Http\Controllers\CategoryController@show');
-    Route::delete('/{pharmacy}', 'App\Http\Controllers\CategoryController@destroy');
+    Route::delete('/{category}', 'App\Http\Controllers\CategoryController@destroy');
 
 });
 

@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -14,10 +16,24 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
-        return CategoryResource::collection($categories);
+         $order_by = $request->input('order_by', 'id');
+        $query = Category::orderBy($order_by);
+
+    if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    if ($request->filled('pagination')) {
+            $categories = $query->paginate($request->pagination);
+            return CategoryResource::collection($categories);
+    }
+
+    $categories = $query->get();
+
+    return CategoryResource::collection($categories);
+
     }
 
     /**
@@ -38,8 +54,26 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $category = Category::create($request->all());
+        $category = new Category;
+
+        $category->name = $request->name;
+
+        if ($request->hasFile('icone')) {
+            $path = $request->file('icone')->store('public/clients');  
+            $category->icone = Storage::url($path);
+        }
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('public/clients');  
+            $category->photo = Storage::url($path);
+        }
+
+        
+
+        $category->save();
+
         return new CategoryResource($category);
+
     }
 
     /**

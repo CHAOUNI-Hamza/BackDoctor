@@ -71,7 +71,7 @@ class PharmacyController extends Controller
             $pharmacy->photo = Storage::url($path);
         }
         $pharmacy->about = $request->about;
-        $pharmacy->location = 'DB::raw("(POINT($request->latitude, $request->longitude))")';
+        $pharmacy->location = $request->location;
 
         $pharmacy->save();
 
