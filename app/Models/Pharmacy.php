@@ -13,8 +13,8 @@ class Pharmacy extends Model
 
     protected $fillable = ['name', 'category_id', 'address', 'administrator', 'phone', 'photo', 'about', 'location'];
 
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 }

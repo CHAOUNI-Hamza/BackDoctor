@@ -42,15 +42,17 @@ class DoctorController extends Controller
     };
                     
 
-        if ($request->filled('specialty')) {
-        $query->whereHas('specialty', function ($query) use ($request) {
-            $query->where('name', $request->specialty);
-       });
-    }
 
-        if ($request->filled('name')) {
-            $query->where('username', 'like', '%' . $request->name . '%');
-    };
+        if ($request->filled('value') && $request->filled('search_by')) {
+            if($request->search_by == 'specialty') {
+                $query->whereHas('specialty', function ($query_test) use ($request) {
+            $query_test->where('name', 'like', '%' . $request->value . '%');
+       });
+            } else {
+                $query->where($request->search_by, 'like', '%' . $request->value . '%');
+            }
+            
+    }
 
     $doctors = $query->paginate(10);
     return DoctorResource::collection($doctors);

@@ -24,6 +24,7 @@ class PharmacyController extends Controller
 
         $order_by = $request->input('order_by', 'id');
         $query = Pharmacy::orderBy($order_by);
+        $query->with('category');
 
     if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');

@@ -27,6 +27,11 @@ class PatientController extends Controller
     public function patients(Request $request) {
         $order_by = $request->input('order_by', 'id');
         $query = Patient::orderBy($order_by);
+        //$query->with('appointments')->first();
+
+        $query->with(['appointments' => function($query_test) {
+    $query_test->latest('created_at')->first();
+}])->first();
 
     if ($request->filled('value') && $request->filled('search_by')) {
             $query->where($request->search_by, 'like', '%' . $request->value . '%');
