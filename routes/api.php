@@ -189,3 +189,18 @@ Route::group([
 
 });
 
+Route::group([
+
+    //'middleware' => 'api',
+    'prefix' => 'settings'
+
+], function ($router) {
+
+    Route::put('/{id}', 'App\Http\Controllers\SettingController@update');
+Route::get('/{id}', 'App\Http\Controllers\SettingController@index');
+
+});
+
+
+
+
