@@ -196,7 +196,7 @@ Route::group([
 
 ], function ($router) {
 
-    Route::put('/{id}', 'App\Http\Controllers\SettingController@update');
+    Route::post('/{id}', 'App\Http\Controllers\SettingController@update');
 Route::get('/{id}', 'App\Http\Controllers\SettingController@index');
 
 });
