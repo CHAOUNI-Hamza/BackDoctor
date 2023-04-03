@@ -82,9 +82,15 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        $category = Category::find($id);
+
+    if (!$category) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    return new CategoryResource($category);
     }
 
     /**
@@ -105,9 +111,27 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        //
+        $category = Category::find($id);
+
+        $category->name = $request->name;
+
+        if ($request->hasFile('icone')) {
+            $path = $request->file('icone')->store('public/clients');  
+            $category->icone = Storage::url($path);
+        }
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('public/clients');  
+            $category->photo = Storage::url($path);
+        }
+
+        
+
+        $category->save();
+
+        return new CategoryResource($category);
     }
 
     /**

@@ -26,7 +26,7 @@ class UpdateSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            /*'email' => 'nullable|email',
             'logo' => 'nullable|image',
             'favicon' => 'nullable|image',
             'address_one' => 'nullable|string',
@@ -73,7 +73,7 @@ class UpdateSettingRequest extends FormRequest
             'display_facebook_pixel' => 'nullable|boolean',
             'google_rechaptcha_key' => 'nullable|string',
             'google_rechaptcha_secret' => 'nullable|string',
-            'cookies_agreement' => 'nullable|boolean'
+            'cookies_agreement' => 'nullable|boolean'*/
         ];
     }
 

@@ -85,9 +85,15 @@ class PharmacyController extends Controller
      * @param  \App\Models\Pharmacy  $pharmacy
      * @return \Illuminate\Http\Response
      */
-    public function show(Pharmacy $pharmacy)
+    public function show(Pharmacy $pharmacy, $id)
     {
-        //
+        $pharmacy = Pharmacy::find($id);
+
+    if (!$pharmacy) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    return new PharmacyResource($pharmacy);
     }
 
     /**
@@ -108,9 +114,25 @@ class PharmacyController extends Controller
      * @param  \App\Models\Pharmacy  $pharmacy
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePharmacyRequest $request, Pharmacy $pharmacy)
+    public function update(UpdatePharmacyRequest $request, $id)
     {
-        //
+        $pharmacy = Pharmacy::find($id);
+
+        $pharmacy->name = $request->name;
+        $pharmacy->category_id = $request->category_id;
+        $pharmacy->address = $request->address;
+        $pharmacy->administrator = $request->administrator;
+        $pharmacy->phone = $request->phone;
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('public/clients');  
+            $pharmacy->photo = Storage::url($path);
+        }
+        $pharmacy->about = $request->about;
+        $pharmacy->location = $request->location;
+
+        $pharmacy->save();
+
+        return new PharmacyResource($pharmacy);
     }
 
     /**

@@ -77,7 +77,7 @@ class SettingController extends Controller
     {
         $setting = Setting::find($id); 
 
-        $setting->email = $request->input('email');
+        $setting->email = $request->input('email'); 
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('public/clients');  
@@ -133,7 +133,7 @@ class SettingController extends Controller
         $setting->display_facebook_pixel = $request->input('display_facebook_pixel');
         $setting->cookies_agreement = $request->input('cookies_agreement');
 
-        $setting->update();
+        $setting->save();
         return new SettingResource($setting);
     }
 

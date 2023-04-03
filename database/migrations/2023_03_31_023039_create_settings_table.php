@@ -25,8 +25,8 @@ class CreateSettingsTable extends Migration
     $table->string('postal_code')->nullable();
     $table->string('country')->nullable();
     $table->string('time_zone')->nullable();
-    $table->string('date_format')->nullable();
-    $table->string('time_format')->nullable();
+    $table->date('date_format')->nullable();
+    $table->time('time_format')->nullable();
     $table->string('currency')->nullable();
     $table->string('paypal_tokenization_key')->nullable();
     $table->string('paypal_merchant_id')->nullable();
@@ -62,7 +62,7 @@ class CreateSettingsTable extends Migration
     $table->string('display_facebook_pixel')->nullable();
     $table->string('google_rechaptcha_key')->nullable();
     $table->string('google_rechaptcha_secret')->nullable();
-    $table->boolean('cookies_agreement')->default(false);
+    $table->string('cookies_agreement')->nullable();
             $table->timestamps();
         });
     }
