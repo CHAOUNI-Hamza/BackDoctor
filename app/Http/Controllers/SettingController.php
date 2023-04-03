@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSettingRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateSettingRequest;
 use App\Http\Resources\SettingResource;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
