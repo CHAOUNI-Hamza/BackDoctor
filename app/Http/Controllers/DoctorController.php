@@ -47,6 +47,10 @@ class DoctorController extends Controller
             $query_test->whereIn('name', $request->search_array);
        });
     }
+
+    if($request->filled('sex')) {
+        $query->where('sex', $request->sex);
+    }
                     
 
 
