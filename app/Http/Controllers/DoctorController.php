@@ -32,6 +32,7 @@ class DoctorController extends Controller
      */
     public function doctors(Request $request)
     {
+       // return $request->search_array;
 
             $query = Doctor::with(['specialty']);
             $query->withCount('appointments');
@@ -40,6 +41,12 @@ class DoctorController extends Controller
             $doctors = $query->orderBy('appointments_count', 'desc')->take($request->limit_doctors)->get();
             return DoctorResource::collection($doctors);
     };
+
+    if($request->filled('search_array')) {
+        $query->whereHas('specialty', function ($query_test) use ($request) {
+            $query_test->whereIn('name', $request->search_array);
+       });
+    }
                     
 
 
