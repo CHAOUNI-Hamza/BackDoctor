@@ -30,6 +30,12 @@ class PharmacyController extends Controller
             $query->where('name', 'like', '%' . $request->name . '%');
     }
 
+    if($request->filled('search_array')) {
+        $query->whereHas('category', function ($query_test) use ($request) {
+            $query_test->whereIn('name', $request->search_array);
+       });
+    }
+
     if ($request->filled('pagination')) {
             $pharmacies = $query->paginate($request->pagination);
             return PharmacyResource::collection($pharmacies);

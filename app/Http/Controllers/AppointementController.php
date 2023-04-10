@@ -20,6 +20,12 @@ class AppointementController extends Controller
         $query->where('status', $request->status)->orWhere('status', $request->status_two);
     }
 
+    if ($request->filled('app_to_doctor')) {
+        $query->whereHas('doctor', function ($query) use ($request) {
+            $query->where('id', $request->app_to_doctor);
+        });
+    }
+
     if ($request->filled('name_patient')) {
         $query->whereHas('patient', function ($query) use ($request) {
             $query->where('name', 'like', '%' . $request->name_patient . '%');
