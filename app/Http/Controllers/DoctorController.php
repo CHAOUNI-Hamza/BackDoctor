@@ -30,7 +30,7 @@ class DoctorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function doctors(Request $request)
+    public function index(Request $request)
     {
        // return $request->search_array;
 
@@ -69,9 +69,9 @@ class DoctorController extends Controller
     return DoctorResource::collection($doctors);
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, Doctor $doctor)
     {
-        $doctor = Doctor::findOrFail($id);
+        $doctor = Doctor::findOrFail($doctor->id);
         $doctor->status = $request->input('status');
         $doctor->save();
         return response()->json([
@@ -104,7 +104,13 @@ class DoctorController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->guard('doctor')->user());
+
+        $doctor = auth()->guard('doctor')->user();
+
+
+    return new DoctorResource($doctor);
+
+        //return response()->json(auth()->guard('doctor')->user());
     }
 
     /**
@@ -126,7 +132,7 @@ class DoctorController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(auth()->guard('doctor')->refresh());
     }
 
     /**
@@ -141,7 +147,7 @@ class DoctorController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->guard('doctor')->factory()->getTTL() * 60
         ]);
     }
     
@@ -155,14 +161,36 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
-        /*$photo = $request->file('photo');
-        $name = time().'.'.$photo->getClientOriginalExtension();
-        $destinationPath = public_path('/uploads');
-        $photo->move($destinationPath, $name);
-        $imageData->path = $destinationPath.'/'.$name;
-        $imageData->save();*/
+        $doctor = new Doctor();
 
-        $doctor = Doctor::create($request->all());
+    $doctor->username = $request->input('username');
+    /*$doctor->specialite_id = $request->input('specialite_id');
+    $doctor->membre_since = $request->input('membre_since');
+    $doctor->status = $request->input('status');
+    $doctor->sex = $request->input('sex');
+    $doctor->date = $request->input('date');*/
+    $doctor->email = $request->input('email');
+   /* $doctor->firstname = $request->input('firstname');
+    $doctor->lastname = $request->input('lastname');*/
+    $doctor->password = bcrypt($request->input('password'));
+    /*$doctor->phone = $request->input('phone');
+    $doctor->clinicname = $request->input('clinicname');
+    $doctor->clinicadresse = $request->input('clinicadresse');
+    $doctor->adresse_one = $request->input('adresse_one');
+    $doctor->adresse_two = $request->input('adresse_two');
+    $doctor->city = $request->input('city');
+    $doctor->state = $request->input('state');
+    $doctor->country = $request->input('country');
+    $doctor->code_postal = $request->input('code_postal');
+    $doctor->pricing = $request->input('pricing');
+    $doctor->service = $request->input('service');
+    $doctor->specialization = $request->input('specialization');
+    $doctor->education = $request->input('education');
+    $doctor->experience = $request->input('experience');
+    $doctor->awords = $request->input('awords');
+    $doctor->memberships = $request->input('memberships');
+    $doctor->memberships = $request->input('registrations');*/
+    $doctor->save();
         return new DoctorResource($doctor);
     }
 
@@ -172,10 +200,25 @@ class DoctorController extends Controller
      * @param  \App\Models\Doctor  $doctor
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Doctor $doctor)
     {
 
-        $doctor = Doctor::with('specialty')->find($id);
+        $doctor = Doctor::with('specialty')->find($doctor->id);
+
+
+    return new DoctorResource($doctor);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Doctor  $doctor
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Doctor $doctor)
+    {
+
+        $doctor = Doctor::with('specialty')->find($doctor->id);
 
 
     return new DoctorResource($doctor);

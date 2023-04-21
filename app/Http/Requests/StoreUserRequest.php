@@ -24,7 +24,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'photo' => 'nullable|image',
+           /* 'photo' => 'nullable|image',
         'firstname' => 'required|string|max:255',
         'lastname' => 'required|string|max:255',
         'age' => 'required|integer|min:18|max:99',
@@ -35,7 +35,7 @@ class StoreUserRequest extends FormRequest
         'pin_code' => 'required|string|max:10',
         'name' => 'required',
         'email' => 'required',
-        'password' => 'required',
+        'password' => 'required',*/
         ];
     }
 }

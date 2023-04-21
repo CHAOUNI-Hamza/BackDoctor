@@ -91,9 +91,9 @@ class PharmacyController extends Controller
      * @param  \App\Models\Pharmacy  $pharmacy
      * @return \Illuminate\Http\Response
      */
-    public function show(Pharmacy $pharmacy, $id)
+    public function show(Pharmacy $pharmacy)
     {
-        $pharmacy = Pharmacy::find($id);
+        $pharmacy = Pharmacy::find($pharmacy->id);
 
     if (!$pharmacy) {
         return response()->json(['message' => 'User not found'], 404);
@@ -110,7 +110,14 @@ class PharmacyController extends Controller
      */
     public function edit(Pharmacy $pharmacy)
     {
-        //
+        $pharmacy = Pharmacy::find($pharmacy->id);
+
+    if (!$pharmacy) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    return new PharmacyResource($pharmacy);
+    
     }
 
     /**
@@ -120,9 +127,9 @@ class PharmacyController extends Controller
      * @param  \App\Models\Pharmacy  $pharmacy
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePharmacyRequest $request, $id)
+    public function update(UpdatePharmacyRequest $request, Pharmacy $pharmacy)
     {
-        $pharmacy = Pharmacy::find($id);
+        $pharmacy = Pharmacy::find($pharmacy->id);
 
         $pharmacy->name = $request->name;
         $pharmacy->category_id = $request->category_id;

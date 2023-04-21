@@ -22,26 +22,6 @@ class PatientController extends Controller
         //$this->middleware('patient', ['except' => ['login']]);
     }
 
-    /* Start Method Admin */
-
-    public function patients(Request $request) {
-        $order_by = $request->input('order_by', 'id');
-        $query = Patient::orderBy($order_by);
-        //$query->with('appointments')->first();
-
-        $query->with(['appointments' => function($query_test) {
-    $query_test->latest('created_at')->first();
-}])->first();
-
-    if ($request->filled('value') && $request->filled('search_by')) {
-            $query->where($request->search_by, 'like', '%' . $request->value . '%');
-    }
-
-    $patients = $query->paginate(10);
-
-    return PatientResource::collection($patients);
-    }
-
     /* End Method Admin */
 
     /**
@@ -113,10 +93,25 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = Patient::all();
-        return PatientResource::collection($doctors);
+        $order_by = $request->input('order_by', 'id');
+        $query = Patient::orderBy($order_by);
+        //$query->with('appointments')->first();
+
+        $query->with(['appointments' => function($query_test) {
+    $query_test->latest('created_at')->first();
+}])->first();
+
+    if ($request->filled('value') && $request->filled('search_by')) {
+            $query->where($request->search_by, 'like', '%' . $request->value . '%');
+    }
+
+    $patients = $query->paginate(10);
+
+    return PatientResource::collection($patients);
+        /*$doctors = Patient::all();
+        return PatientResource::collection($doctors);*/
     }
 
     /**
@@ -128,6 +123,10 @@ class PatientController extends Controller
     public function store(StorePatientRequest $request)
     {
         $patient = Patient::create($request->all());
+        return new PatientResource($patient);
+    }
+
+    public function edit(Patient $patient) {
         return new PatientResource($patient);
     }
 

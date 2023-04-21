@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -35,6 +36,7 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+
     }
 
     /**
@@ -44,7 +46,12 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+//        return response()->json(auth()->user());
+
+        $user = auth()->user();
+
+
+    return new UserResource($user);
     }
 
     /**
@@ -93,16 +100,16 @@ class AuthController extends Controller
     public function index()
     {
         $doctors = User::all();
-        return DoctorResource::collection($doctors);
+        return UserResource::collection($doctors);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreDoctorRequest  $request
+     * @param  \App\Http\Requests\StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDoctorRequest $request)
+    public function store(StoreUserRequest $request)
     {
         /*$photo = $request->file('photo');
         $name = time().'.'.$photo->getClientOriginalExtension();
@@ -111,8 +118,16 @@ class AuthController extends Controller
         $imageData->path = $destinationPath.'/'.$name;
         $imageData->save();*/
 
-        $user = User::create($request->all());
-        return new DoctorResource($user);
+        /*$user = User::create($request->all());
+        return new UserResource($user);*/
+
+        $user = new User();
+
+    $user->name = $request->input('name');
+    $user->email = $request->input('email');
+    $user->password = bcrypt($request->input('password'));
+    $user->save();
+    return new UserResource($user);
     }
 
     /**
@@ -123,7 +138,7 @@ class AuthController extends Controller
      */
     public function show(User $user)
     {
-        return new DoctorResource($user);
+        return new UserResource($user);
     }
 
     /**
@@ -137,7 +152,7 @@ class AuthController extends Controller
     {
         return 'hhhh';
         $user->update($request->all());
-        return new DoctorResource($user);
+        return new UserResource($user);
     }
 
     /**
@@ -149,7 +164,7 @@ class AuthController extends Controller
     public function delete(User $user)
     {
         $user->delete();
-        return new DoctorResource($user);
+        return new UserResource($user);
     }
 
     public function deleted() {
@@ -159,6 +174,6 @@ class AuthController extends Controller
     public function restore(User $user) {
         $user = User::onlyTrashed()->findOrFail($user);
     $user->restore();
-    return new DoctorResource($user);
+    return new UserResource($user);
     }
 }

@@ -18,6 +18,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+
          $order_by = $request->input('order_by', 'id');
         $query = Category::orderBy($order_by);
 
@@ -82,9 +83,9 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        $category = Category::find($id);
+        $category = Category::find($category->id);
 
     if (!$category) {
         return response()->json(['message' => 'User not found'], 404);
@@ -101,7 +102,14 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $category = Category::find($category->id);
+
+    if (!$category) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    return new CategoryResource($category);
+    
     }
 
     /**
@@ -111,9 +119,9 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category = Category::find($id);
+        $category = Category::find($category->id);
 
         $category->name = $request->name;
 

@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +28,26 @@ Route::group([
 
 ], function ($router) {
 
+    // Afficher tous les docteurs
     Route::get('/', 'App\Http\Controllers\AuthController@index');
+
+    // Créer un nouveau docteur
     Route::post('/', 'App\Http\Controllers\AuthController@store');
+
+    // Afficher un docteur spécifique
     Route::get('/{user}', 'App\Http\Controllers\AuthController@show');
+
+    // Mettre à jour un docteur spécifique
     Route::put('/{user}', 'App\Http\Controllers\AuthController@update');
+
+    // Supprimer un docteur spécifique (soft delete)
     Route::delete('/{user}', 'App\Http\Controllers\AuthController@delete');
+
+    // Restaurer un docteur supprimé (soft delete)
     Route::put('/restore/{user}', 'App\Http\Controllers\AuthController@restore');
+
     Route::post('deleted', 'App\Http\Controllers\AuthController@deleted');
+
     Route::post('login', 'App\Http\Controllers\AuthController@login');
     Route::post('logout', 'App\Http\Controllers\AuthController@logout');
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
@@ -47,21 +59,34 @@ Route::group([
 Route::group([
 
     //'middleware' => 'doctor',
-    'middleware' => 'auth', 'verified',
-    //'prefix' => 'doctors'
+    'prefix' => 'doctors'
 
 ], function ($router) {
 
-    Route::resource('doctors', 'App\Http\Controllers\DoctorController');
+    // Afficher tous les docteurs
+    Route::get('/', 'App\Http\Controllers\DoctorController@doctors');
 
+    // Créer un nouveau docteur
+    Route::post('/', 'App\Http\Controllers\DoctorController@store');
+
+    // Afficher un docteur spécifique
+    Route::get('/{doctor}', 'App\Http\Controllers\DoctorController@show');
+
+    // Mettre à jour un docteur spécifique
+    Route::put('/{doctor}', 'App\Http\Controllers\DoctorController@update');
     Route::post('/{doctor}/update-status', 'App\Http\Controllers\DoctorController@updateStatus');
+
+    // Supprimer un docteur spécifique (soft delete)
     Route::delete('/{doctor}', 'App\Http\Controllers\DoctorController@delete');
+
+    // Restaurer un docteur supprimé (soft delete)
     Route::put('/restore/{doctor}', 'App\Http\Controllers\DoctorController@restore');
-    Route::post('doctors/login', 'App\Http\Controllers\DoctorController@login');
-    Route::post('doctors/logout', 'App\Http\Controllers\DoctorController@logout');
-    Route::post('doctors/refresh', 'App\Http\Controllers\DoctorController@refresh');
-    Route::post('doctors/me', 'App\Http\Controllers\DoctorController@me');
-    Route::post('doctors/deleted', 'App\Http\Controllers\DoctorController@deleted');
+
+    Route::post('login', 'App\Http\Controllers\DoctorController@login');
+    Route::post('logout', 'App\Http\Controllers\DoctorController@logout');
+    Route::post('refresh', 'App\Http\Controllers\DoctorController@refresh');
+    Route::post('me', 'App\Http\Controllers\DoctorController@me');
+    Route::post('deleted', 'App\Http\Controllers\DoctorController@deleted');
 
 });
 
@@ -75,8 +100,20 @@ Route::group([
 
     Route::resource('patients', 'App\Http\Controllers\PatientController');
 
+    /*Route::get('/', 'App\Http\Controllers\PatientController@patients');
+
+    Route::post('/', 'App\Http\Controllers\PatientController@store');
+
+    Route::get('/{patient}', 'App\Http\Controllers\PatientController@show');
+
+    Route::put('/{patient}', 'App\Http\Controllers\PatientController@update');
+
+    Route::delete('/{patient}', 'App\Http\Controllers\PatientController@delete');*/
+
     Route::get('/trashed', 'App\Http\Controllers\PatientController@trashed');
+
     Route::put('/restore/{patient}', 'App\Http\Controllers\PatientController@restore');
+
     Route::post('login', 'App\Http\Controllers\PatientController@login');
     Route::post('logout', 'App\Http\Controllers\PatientController@logout');
     Route::post('refresh', 'App\Http\Controllers\PatientController@refresh');
@@ -94,7 +131,10 @@ Route::group([
     'prefix' => 'appointements'
 
 ], function ($router) {
+
+    // Afficher tous les appointement Upcomming
     Route::get('/upcomming_past', 'App\Http\Controllers\AppointementController@appointementUpcommingPast');
+
 });
 
 Route::group([
@@ -105,6 +145,12 @@ Route::group([
 ], function ($router) {
 
     Route::resource('specialties', 'App\Http\Controllers\SpecialtyController');
+
+    /*Route::get('/', 'App\Http\Controllers\SpecialtyController@index');
+    Route::post('/', 'App\Http\Controllers\SpecialtyController@store');
+    Route::post('/{specialty}', 'App\Http\Controllers\SpecialtyController@update');
+    Route::get('/{specialty}', 'App\Http\Controllers\SpecialtyController@show');
+    Route::delete('/{specialty}', 'App\Http\Controllers\SpecialtyController@destroy');*/
 
 });
 
@@ -117,6 +163,12 @@ Route::group([
 
     Route::resource('pharmacies', 'App\Http\Controllers\PharmacyController');
 
+    /*Route::get('/', 'App\Http\Controllers\PharmacyController@index');
+    Route::post('/', 'App\Http\Controllers\PharmacyController@store');
+    Route::post('/{pharmacy}', 'App\Http\Controllers\PharmacyController@update');
+    Route::get('/{pharmacy}', 'App\Http\Controllers\PharmacyController@show');
+    Route::delete('/{pharmacy}', 'App\Http\Controllers\PharmacyController@destroy');*/
+
 });
 
 
@@ -128,6 +180,13 @@ Route::group([
 ], function ($router) {
 
     Route::resource('categories', 'App\Http\Controllers\CategoryController');
+
+   /* Route::get('/', 'App\Http\Controllers\CategoryController@index');
+    Route::post('/', 'App\Http\Controllers\CategoryController@store');
+    Route::post('/{category}', 'App\Http\Controllers\CategoryController@update');
+    Route::get('/{category}', 'App\Http\Controllers\CategoryController@show');
+    Route::delete('/{category}', 'App\Http\Controllers\CategoryController@destroy');*/
+
 });
 
 Route::group([
@@ -138,7 +197,7 @@ Route::group([
 ], function ($router) {
 
     Route::post('/{id}', 'App\Http\Controllers\SettingController@update');
-    Route::get('/{id}', 'App\Http\Controllers\SettingController@index');
+Route::get('/{id}', 'App\Http\Controllers\SettingController@index');
 
 });
 

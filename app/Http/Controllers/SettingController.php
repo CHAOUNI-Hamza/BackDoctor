@@ -73,9 +73,9 @@ class SettingController extends Controller
      * @param  \App\Models\Setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSettingRequest $request, $id)
+    public function update(UpdateSettingRequest $request, Setting $setting)
     {
-        $setting = Setting::find($id); 
+        $setting = Setting::find($setting->id); 
 
         $setting->email = $request->input('email'); 
 

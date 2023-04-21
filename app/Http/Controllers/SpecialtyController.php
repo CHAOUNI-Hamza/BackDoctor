@@ -12,25 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class SpecialtyController extends Controller
 {
-    /* Start Method Admin */
-
-    public function specialties(Request $request) {
-        $order_by = $request->input('order_by', 'id');
-        $query = specialty::orderBy($order_by);
-
-    if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-    }
-
-    if ($request->filled('pagination')) {
-            $specialities = $query->paginate($request->pagination);
-            return SpecialtyResource::collection($specialities);
-    }
-
-    $specialities = $query->get();
-
-    return SpecialtyResource::collection($specialities);
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -58,9 +39,9 @@ class SpecialtyController extends Controller
      * @param  \App\Models\specialty  $specialty
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatespecialtyRequest $request, $id)
+    public function update(UpdatespecialtyRequest $request, specialty $specialty)
     {
-        $specialty = specialty::find($id);
+        $specialty = specialty::find($specialty->id);
         $specialty->name = $request->name;
 
         if ($request->hasFile('photo')) {
@@ -79,15 +60,15 @@ class SpecialtyController extends Controller
      * @param  \App\Models\specialty  $specialty
      * @return \Illuminate\Http\Response
      */
-    public function show(specialty $specialty, $id)
+    public function show(specialty $specialty)
     {
-        $specialty = specialty::find($id);
+        $specialtie = specialty::find($specialty->id);
 
-    if (!$specialty) {
+    if (!$specialtie) {
         return response()->json(['message' => 'User not found'], 404);
     }
 
-    return new SpecialtyResource($specialty);
+    return new SpecialtyResource($specialtie);
     }
 
     /**
@@ -109,9 +90,23 @@ class SpecialtyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $order_by = $request->input('order_by', 'id');
+        $query = specialty::orderBy($order_by, 'DESC');
+
+    if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    if ($request->filled('pagination')) {
+            $specialities = $query->paginate($request->pagination);
+            return SpecialtyResource::collection($specialities);
+    }
+
+    $specialities = $query->get();
+
+    return SpecialtyResource::collection($specialities);
     }
 
     /**
@@ -136,7 +131,13 @@ class SpecialtyController extends Controller
      */
     public function edit(specialty $specialty)
     {
-        //
+        $specialtie = specialty::find($specialty->id);
+
+        if (!$specialtie) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        return new SpecialtyResource($specialtie);
     }
 
     

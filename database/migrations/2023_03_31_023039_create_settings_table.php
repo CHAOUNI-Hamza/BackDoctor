@@ -63,6 +63,7 @@ class CreateSettingsTable extends Migration
     $table->string('google_rechaptcha_key')->nullable();
     $table->string('google_rechaptcha_secret')->nullable();
     $table->string('cookies_agreement')->nullable();
+    $table->softDeletes();
             $table->timestamps();
         });
     }

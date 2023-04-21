@@ -21,6 +21,7 @@ class CreateDoctorPatientTable extends Migration
 
     $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
     $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+    $table->softDeletes();
 
             $table->timestamps();
         });

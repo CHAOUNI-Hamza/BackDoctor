@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use App\Models\Patient;
 use App\Models\Appointement;
 use App\Models\specialty;   
 
-class Doctor extends Authenticatable implements JWTSubject
+class Doctor extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use HasFactory, SoftDeletes, Notifiable;
 
@@ -47,7 +48,8 @@ class Doctor extends Authenticatable implements JWTSubject
             'experience',
             'awords',
             'memberships',
-            'registrations'
+            'registrations',
+            'email_verified_at'
     ];
 
     protected $hidden = [
