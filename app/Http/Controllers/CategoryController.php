@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Storage;
 class CategoryController extends Controller
 {
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {  
+        $this->middleware('auth:api');
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -20,7 +30,7 @@ class CategoryController extends Controller
     {
 
          $order_by = $request->input('order_by', 'id');
-        $query = Category::orderBy($order_by);
+        $query = Category::orderBy($order_by, 'DESC');
 
     if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
@@ -61,12 +71,12 @@ class CategoryController extends Controller
 
         if ($request->hasFile('icone')) {
             $path = $request->file('icone')->store('public/clients');  
-            $category->icone = Storage::url($path);
+            $category->icone = config('app.url').Storage::url($path);
         }
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('public/clients');  
-            $category->photo = Storage::url($path);
+            $category->photo = config('app.url').Storage::url($path);
         }
 
         
@@ -127,12 +137,12 @@ class CategoryController extends Controller
 
         if ($request->hasFile('icone')) {
             $path = $request->file('icone')->store('public/clients');  
-            $category->icone = Storage::url($path);
+            $category->icone = config('app.url').Storage::url($path);
         }
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('public/clients');  
-            $category->photo = Storage::url($path);
+            $category->photo = config('app.url').Storage::url($path);
         }
 
         

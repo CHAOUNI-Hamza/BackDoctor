@@ -49,6 +49,7 @@ $table->string('service');
         $table->string('awords');
         $table->string('memberships');
         $table->string('registrations');
+        $table->string('google_id')->nullable();
 $table->softDeletes();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

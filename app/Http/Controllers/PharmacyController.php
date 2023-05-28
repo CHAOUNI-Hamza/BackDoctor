@@ -11,7 +11,16 @@ use Illuminate\Support\Facades\Storage;
 
 class PharmacyController extends Controller
 {
-    /* Start Method Admin */
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {  
+        $this->middleware('auth:api');
+    }
 
     /**
      * Display a listing of the resource.
@@ -23,7 +32,7 @@ class PharmacyController extends Controller
 
 
         $order_by = $request->input('order_by', 'id');
-        $query = Pharmacy::orderBy($order_by);
+        $query = Pharmacy::orderBy($order_by, 'DESC');
         $query->with('category');
 
     if ($request->filled('name')) {
@@ -45,8 +54,6 @@ class PharmacyController extends Controller
 
     return PharmacyResource::collection($pharmacies);
     }
-
-    /* End Method Admin */
 
     /**
      * Show the form for creating a new resource.
@@ -75,7 +82,7 @@ class PharmacyController extends Controller
         $pharmacy->phone = $request->phone;
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('public/clients');  
-            $pharmacy->photo = Storage::url($path);
+            $pharmacy->photo = config('app.url').Storage::url($path);
         }
         $pharmacy->about = $request->about;
         $pharmacy->location = $request->location;
@@ -138,7 +145,7 @@ class PharmacyController extends Controller
         $pharmacy->phone = $request->phone;
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('public/clients');  
-            $pharmacy->photo = Storage::url($path);
+            $pharmacy->photo = config('app.url').Storage::url($path);
         }
         $pharmacy->about = $request->about;
         $pharmacy->location = $request->location;

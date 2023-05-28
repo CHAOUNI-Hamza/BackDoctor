@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         //\App\Models\Role::create(['name' => 'viewer']);
 
         \App\Models\User::factory(10)->create();
+        \App\Models\Setting::factory(1)->create();
         //\App\Models\Role::factory(3)->create();
         //\App\Models\Setting::factory()->count(1)->create();
         \App\Models\Category::factory()->count(5)->create();

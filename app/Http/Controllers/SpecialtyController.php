@@ -14,6 +14,16 @@ class SpecialtyController extends Controller
 {
 
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {  
+        $this->middleware('auth:api');
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorespecialtyRequest  $request
@@ -25,7 +35,7 @@ class SpecialtyController extends Controller
         $specialty->name = $request->name;
         if ($request->hasFile('photo')) {
         $path = $request->file('photo')->store('public/clients');  
-            $specialty->photo = Storage::url($path);
+            $specialty->photo = config('app.url').Storage::url($path);
         }
         
         $specialty->save();
@@ -46,7 +56,7 @@ class SpecialtyController extends Controller
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('public/clients');  
-            $specialty->photo = Storage::url($path);
+            $specialty->photo = config('app.url').Storage::url($path);
         }
 
     $specialty->update(); 
@@ -83,8 +93,6 @@ class SpecialtyController extends Controller
         return new SpecialtyResource($specialty);
     }
     
-    /* End Method Admin */
-
     /**
      * Display a listing of the resource.
      *

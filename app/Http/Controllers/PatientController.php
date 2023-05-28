@@ -12,17 +12,16 @@ use App\Http\Controllers\Controller;
 
 class PatientController extends Controller
 {
+
     /**
      * Create a new AuthController instance.
      *
      * @return void
      */
     public function __construct()
-    {
-        //$this->middleware('patient', ['except' => ['login']]);
+    {  
+        $this->middleware('auth:api', ['except' => ['login']]);
     }
-
-    /* End Method Admin */
 
     /**
      * Get a JWT via given credentials.
@@ -152,6 +151,17 @@ class PatientController extends Controller
     {
         $patient->update($request->all());
         return new PatientResource($patient);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+        $patient->status = $request->input('status');
+        $patient->save();
+        return response()->json([
+            'message' => 'Patient updated successfully',
+            'data' => $patient
+        ]);
     }
 
     /**

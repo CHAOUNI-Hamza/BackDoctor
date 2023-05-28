@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Doctors;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Doctor;
 use App\Models\Appointement;
@@ -10,12 +11,8 @@ use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorResource;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
-use Exception;
 
-class DoctorController extends Controller
+class DoctorDoctorController extends Controller
 {
     /**
      * Create a new AuthController instance.
@@ -24,7 +21,7 @@ class DoctorController extends Controller
      */
     public function __construct()
     {  
-        $this->middleware('authdoctor:api', ['except' => ['login','store','redirectToGoogle','handleGoogleCallback']]);
+        $this->middleware('doctor:api', ['except' => ['login','store']]);
     }
 
     /* Start Method Admin */
@@ -259,70 +256,5 @@ class DoctorController extends Controller
         $doctor = Doctor::onlyTrashed()->findOrFail($doctor);
     $doctor->restore();
     return new DoctorResource($doctor);
-    }
-
-    public function changePassword(Request $request)
-    {
-        $doctor = auth()->guard('doctor')->user();
-
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
-        ]);
-
-        if (!Hash::check($request->current_password, $doctor->password)) {
-            return response()->json(['message' => 'Le mot de passe actuel est incorrect.'], 422);
-        }
-
-        $doctor->password = bcrypt($request->new_password);
-        $doctor->save();
-
-        return response()->json(['message' => 'Le mot de passe a été modifié avec succès.']);
-    }
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-          
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function handleGoogleCallback()
-    {
-        try {
-        
-            $user = Socialite::driver('google')->user();
-         
-            $finduser = Doctor::where('google_id', $user->id)->first();
-         
-            if($finduser){
-         
-                auth()->guard('doctor')->login($finduser);
-        
-                return redirect()->intended('dashboard');
-         
-            }else{
-                $newUser = Doctor::updateOrCreate(['email' => $user->email],[
-                        'name' => $user->name,
-                        'google_id'=> $user->id,
-                        'password' => encrypt('123456dummy')
-                    ]);
-         
-                    auth()->guard('doctor')->login($newUser);
-        
-                return redirect()->intended('dashboard');
-            }
-        
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
     }
 }

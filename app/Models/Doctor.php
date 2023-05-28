@@ -13,7 +13,7 @@ use App\Models\Patient;
 use App\Models\Appointement;
 use App\Models\specialty;   
 
-class Doctor extends Authenticatable implements JWTSubject, MustVerifyEmail
+class Doctor extends Authenticatable implements JWTSubject
 {
     use HasFactory, SoftDeletes, Notifiable;
 
@@ -49,7 +49,8 @@ class Doctor extends Authenticatable implements JWTSubject, MustVerifyEmail
             'awords',
             'memberships',
             'registrations',
-            'email_verified_at'
+            'email_verified_at',
+            'google_id'
     ];
 
     protected $hidden = [

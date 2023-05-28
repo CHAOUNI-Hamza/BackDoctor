@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {  
+        $this->middleware('auth:api');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +30,6 @@ class SettingController extends Controller
     public function index($id)
     {
         $setting = Setting::find($id);
-
         return new SettingResource($setting);
     }
 
@@ -73,20 +83,22 @@ class SettingController extends Controller
      * @param  \App\Models\Setting  $setting
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSettingRequest $request, Setting $setting)
+    public function update(UpdateSettingRequest $request, $id)
     {
-        $setting = Setting::find($setting->id); 
+        $setting = Setting::find($id); 
 
-        $setting->email = $request->input('email'); 
+            if($request->input('type') == 'generale') {
+
+                $setting->email = $request->input('email'); 
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('public/clients');  
-            $setting->logo = Storage::url($path);
+            $setting->logo = config('app.url').Storage::url($path);
         }
 
         if ($request->hasFile('favicon')) {
             $path = $request->file('favicon')->store('public/clients');  
-            $setting->favicon = Storage::url($path);
+            $setting->favicon = config('app.url').Storage::url($path);
         }
 
         $setting->address_one = $request->input('address_one');
@@ -95,11 +107,21 @@ class SettingController extends Controller
         $setting->province = $request->input('province');
         $setting->postal_code = $request->input('postal_code');
         $setting->country = $request->input('country');
-        $setting->time_zone = $request->input('time_zone');
+
+            }
+                
+            
+
+
+            if($request->input('type') == 'localization') {$setting->time_zone = $request->input('time_zone');
         $setting->date_format = $request->input('date_format');
         $setting->time_format = $request->input('time_format');
         $setting->currency = $request->input('currency');
-        $setting->paypal_tokenization_key = $request->input('paypal_tokenization_key');
+}
+
+        
+       
+        if($request->input('type') == 'payment') {$setting->paypal_tokenization_key = $request->input('paypal_tokenization_key');
         $setting->paypal_merchant_id = $request->input('paypal_merchant_id');
         $setting->paypal_public_key = $request->input('paypal_public_key');
         $setting->paypal_private_key = $request->input('paypal_private_key');
@@ -108,30 +130,47 @@ class SettingController extends Controller
         $setting->stripe_option = $request->input('stripe_option');
         $setting->stripe_name = $request->input('stripe_name');
         $setting->stripe_merchant_id = $request->input('stripe_merchant_id');
-        $setting->stripe_rest_id = $request->input('stripe_rest_id');
-        $setting->php_mail_email = $request->input('php_mail_email');
+        $setting->stripe_rest_id = $request->input('stripe_rest_id');}
+
+        
+
+        if($request->input('type') == 'email') {$setting->php_mail_email = $request->input('php_mail_email');
         $setting->php_mail_password = $request->input('php_mail_password');
         $setting->php_mail_email_from_name = $request->input('php_mail_email_from_name');
         $setting->smtp_email = $request->input('smtp_email');
         $setting->smtp_password = $request->input('smtp_password');
         $setting->smtp_email_host = $request->input('smtp_email_host');
-        $setting->smtp_email_port = $request->input('smtp_email_port');
-        $setting->google_client_id = $request->input('google_client_id');
+        $setting->smtp_email_port = $request->input('smtp_email_port');}
+
+        
+
+        if($request->input('type') == 'socialmodialog') {$setting->google_client_id = $request->input('google_client_id');
         $setting->google_client_secret = $request->input('google_client_secret');
         $setting->facebook_app_id = $request->input('facebook_app_id');
         $setting->facebook_app_secret = $request->input('facebook_app_secret');
         $setting->twitter_client_id = $request->input('twitter_client_id');
-        $setting->twitter_client_secret = $request->input('twitter_client_secret');
-        $setting->facebook = $request->input('facebook');
+        $setting->twitter_client_secret = $request->input('twitter_client_secret');}
+
+        
+
+        if($request->input('type') == 'sociallinks') {$setting->facebook = $request->input('facebook');
         $setting->twitter = $request->input('twitter');
-        $setting->linkedin = $request->input('linkedin');
-        $setting->seo_title = $request->input('seo_title');
-        $setting->seo_description = $request->input('seo_description');
-        $setting->google_analytics = $request->input('google_analytics');
+        $setting->linkedin = $request->input('linkedin');}
+
+        
+
+        if($request->input('type') == 'seo') {$setting->seo_title = $request->input('seo_title');
+        $setting->seo_description = $request->input('seo_description');}
+        
+
+        if($request->input('type') == 'others') {
+            $setting->google_analytics = $request->input('google_analytics');
         $setting->google_adcence_code = $request->input('google_adcence_code');
         $setting->facebook_messanger = $request->input('facebook_messanger');
         $setting->display_facebook_pixel = $request->input('display_facebook_pixel');
         $setting->cookies_agreement = $request->input('cookies_agreement');
+        }
+        
 
         $setting->save();
         return new SettingResource($setting);

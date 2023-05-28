@@ -11,6 +11,8 @@ use App\Models\Role;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -19,6 +21,11 @@ class User extends Authenticatable implements JWTSubject
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    public function providers()
+    {
+        return $this->hasMany(Provider::class,'user_id','id');
     }
 
     /**
@@ -80,5 +87,17 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * sendPasswordResetNotification
+     */
+    public function sendPasswordResetNotification($token)
+    {
+
+        //$url = 'http://localhost:8000/v1/admin/reset-password?token=' . $token;
+        $url = 'http://localhost:8080/admin/reset-password-admin/' . $token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 }

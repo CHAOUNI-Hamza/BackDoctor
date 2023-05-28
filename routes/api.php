@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::group([
 
-    //'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
@@ -32,7 +31,7 @@ Route::group([
     Route::get('/', 'App\Http\Controllers\AuthController@index');
     Route::post('/', 'App\Http\Controllers\AuthController@store');
     Route::get('/{user}', 'App\Http\Controllers\AuthController@show');
-    Route::put('/{user}', 'App\Http\Controllers\AuthController@update');
+    Route::post('/{id}/update', 'App\Http\Controllers\AuthController@update');
     Route::delete('/{user}', 'App\Http\Controllers\AuthController@delete');
     Route::put('/restore/{user}', 'App\Http\Controllers\AuthController@restore');
     Route::post('deleted', 'App\Http\Controllers\AuthController@deleted');
@@ -41,20 +40,26 @@ Route::group([
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
     Route::post('me', 'App\Http\Controllers\AuthController@me');
 
+    Route::get('/sociale/{provider}', 'App\Http\Controllers\AuthController@redirectToProvider');
+    Route::get('/sociale/{provider}/callback', 'App\Http\Controllers\AuthController@handleProviderCallback');
+
+    // security
+    Route::post('/forgot-password-admin', 'App\Http\Controllers\AuthController@forgotpassword'); 
+    Route::post('/reset-password-admin', 'App\Http\Controllers\AuthController@resetpassword'); 
+
 });
 
 
 Route::group([
 
-    //'middleware' => 'doctor',
-    'middleware' => 'auth', 'verified',
     //'prefix' => 'doctors'
 
 ], function ($router) {
 
     Route::resource('doctors', 'App\Http\Controllers\DoctorController');
 
-    Route::post('/{doctor}/update-status', 'App\Http\Controllers\DoctorController@updateStatus');
+    Route::post('doctors/{id}/update-status', 'App\Http\Controllers\DoctorController@updateStatus');
+
     Route::delete('/{doctor}', 'App\Http\Controllers\DoctorController@delete');
     Route::put('/restore/{doctor}', 'App\Http\Controllers\DoctorController@restore');
     Route::post('doctors/login', 'App\Http\Controllers\DoctorController@login');
@@ -62,18 +67,20 @@ Route::group([
     Route::post('doctors/refresh', 'App\Http\Controllers\DoctorController@refresh');
     Route::post('doctors/me', 'App\Http\Controllers\DoctorController@me');
     Route::post('doctors/deleted', 'App\Http\Controllers\DoctorController@deleted');
+    Route::post('doctors/change_password', 'App\Http\Controllers\DoctorController@changePassword');
 
 });
 
 
 Route::group([
 
-    //'middleware' => 'api',
     //'prefix' => 'patients'
 
 ], function ($router) {
 
     Route::resource('patients', 'App\Http\Controllers\PatientController');
+
+    Route::post('patients/{id}/update-status', 'App\Http\Controllers\PatientController@updateStatus');
 
     Route::get('/trashed', 'App\Http\Controllers\PatientController@trashed');
     Route::put('/restore/{patient}', 'App\Http\Controllers\PatientController@restore');
@@ -90,31 +97,34 @@ Route::group([
 
 Route::group([
 
-    //'middleware' => 'api',
     'prefix' => 'appointements'
 
 ], function ($router) {
-    Route::get('/upcomming_past', 'App\Http\Controllers\AppointementController@appointementUpcommingPast');
+    Route::get('/upcomming_past', 'App\Http\Controllers\AppointementController@index');
+
+    /* Doctor */
+    Route::get('/appointement_doctor', 'App\Http\Controllers\Doctors\AppointementDoctorController@index');
+    /* Doctor */
 });
 
 Route::group([
 
-    //'middleware' => 'api',
     //'prefix' => 'specialties'
 
 ], function ($router) {
 
+    Route::post('specialties/{specialty}', 'App\Http\Controllers\SpecialtyController@update');
     Route::resource('specialties', 'App\Http\Controllers\SpecialtyController');
 
 });
 
 Route::group([
 
-    //'middleware' => 'api',
     //'prefix' => 'pharmacies'
 
 ], function ($router) {
 
+    Route::post('pharmacies/{pharmacy}', 'App\Http\Controllers\PharmacyController@update');
     Route::resource('pharmacies', 'App\Http\Controllers\PharmacyController');
 
 });
@@ -122,17 +132,16 @@ Route::group([
 
 Route::group([
 
-    //'middleware' => 'api',
     //'prefix' => 'categories'
 
 ], function ($router) {
 
+    Route::post('categories/{category}', 'App\Http\Controllers\CategoryController@update');
     Route::resource('categories', 'App\Http\Controllers\CategoryController');
 });
 
 Route::group([
 
-    //'middleware' => 'api',
     'prefix' => 'settings'
 
 ], function ($router) {
@@ -141,6 +150,12 @@ Route::group([
     Route::get('/{id}', 'App\Http\Controllers\SettingController@index');
 
 });
+
+
+
+
+
+
 
 
 
